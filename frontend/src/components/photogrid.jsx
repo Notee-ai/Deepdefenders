@@ -1,4 +1,8 @@
 import React from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules"; // Correct import for Swiper v11
+import "swiper/css";
+import "swiper/css/autoplay";
 
 const PhotoGrid = () => {
   const images = [
@@ -9,15 +13,36 @@ const PhotoGrid = () => {
   ];
 
   return (
-    <div className="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
-      {images.map((image, index) => (
-        <div key={index} className="flex flex-col gap-3">
-          <div
-            className="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-xl"
-            style={{ backgroundImage: `url("${image}")` }}
-          />
-        </div>
-      ))}
+    <div style={{ width: "100%", padding: "20px" }}>
+      <Swiper
+        spaceBetween={10} // Reduce the gap between images
+        slidesPerView={3} // Show 3 images at once
+        loop={true} // Enable infinite loop
+        autoplay={{
+          delay: 0, // No delay for continuous sliding
+          disableOnInteraction: false, // Keep autoplay active even after interaction
+        }}
+        speed={3000} // Adjust the speed for the "train" effect
+        modules={[Autoplay]} // Register the Autoplay module
+      >
+        {images.map((image, index) => (
+          <SwiperSlide
+            key={index}
+            style={{ display: "flex", justifyContent: "center" }}
+          >
+            <div
+              style={{
+                width: "200px", // Increase the size of the images
+                height: "200px", // Increase the size of the images
+                backgroundImage: `url(${image})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                borderRadius: "12px",
+              }}
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </div>
   );
 };
