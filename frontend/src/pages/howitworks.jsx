@@ -16,6 +16,7 @@ const HowItWorks = () => {
   const [step3Images] = useState([
     "https://cdn.usegalileo.ai/sdxl10/579b1395-a05c-4291-82c7-511a3bc41e63.png",
     "https://cdn.usegalileo.ai/sdxl10/e1e49f26-954e-4d26-8991-6ff313c8eaa9.png",
+    "https://cdn.usegalileo.ai/sdxl10/dd1df1bc-cff8-4525-91fa-2b7d3c171387.png",
   ]);
 
   const [modalImage, setModalImage] = useState(null);
@@ -34,8 +35,11 @@ const HowItWorks = () => {
       style={{ fontFamily: "Space Grotesk, Noto Sans, sans-serif" }}
     >
       <div className="layout-container flex flex-col">
-        <div className="px-6 sm:px-10 lg:px-40 flex flex-1 justify-center py-5">
-          <div className="layout-content-container max-w-[960px] w-full">
+        <div className="px-6 sm:px-10 flex flex-1 justify-center py-5">
+          <div
+            className="layout-content-container w-full"
+            style={{ maxWidth: "1237.6px", margin: "0 auto" }}
+          >
             <section className="flex justify-between items-center gap-3 p-4">
               <p className="text-white text-3xl sm:text-4xl font-black">
                 How Deep Defenders Works
@@ -74,7 +78,9 @@ const HowItWorks = () => {
                 <p className="text-gray-300 text-sm sm:text-base mb-4">
                   {step.description}
                 </p>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
+                  {" "}
+                  {/* Increased gap */}
                   {step.images.map((img, i) => (
                     <div
                       key={i}

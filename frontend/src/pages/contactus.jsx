@@ -5,7 +5,7 @@ function ContactUs() {
     <div
       style={{
               width: "917.6px",
-          height: "800px",
+          height: "882px",
         margin: "0 auto",
         fontFamily: "Space Grotesk, Noto Sans, sans-serif", // Applied custom font
         color: "#ffffff",
@@ -32,7 +32,7 @@ function ContactUs() {
               placeholder="First name"
               style={{
                 width: "100%",
-                height: "48px",
+                height: "60px",
                 padding: "12px",
                 borderRadius: "4px",
                 border: "1px solid #ccc",
@@ -59,7 +59,7 @@ function ContactUs() {
               placeholder="Last name"
               style={{
                 width: "100%",
-                height: "48px",
+                height: "60px",
                 padding: "12px",
                 borderRadius: "4px",
                 border: "1px solid #ccc",
@@ -85,7 +85,7 @@ function ContactUs() {
             placeholder="Email address"
             style={{
               width: "100%",
-              height: "48px",
+              height: "60px",
               padding: "12px",
               borderRadius: "4px",
               border: "1px solid #ccc",
@@ -110,7 +110,7 @@ function ContactUs() {
             placeholder="Phone number"
             style={{
               width: "100%",
-              height: "48px",
+              height: "60px",
               padding: "12px",
               borderRadius: "4px",
               border: "1px solid #ccc",
@@ -160,7 +160,7 @@ function ContactUs() {
         <button
           type="submit"
           style={{
-            height: "48px",
+            height: "50px",
             borderRadius: "4px",
             border: "none",
             backgroundColor: "#007bff",

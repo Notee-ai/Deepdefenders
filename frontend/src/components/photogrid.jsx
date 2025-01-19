@@ -32,12 +32,12 @@ const PhotoGrid = () => {
           >
             <div
               style={{
-                width: "200px", // Increase the size of the images
-                height: "200px", // Increase the size of the images
+                width: "250px", // Increased image width
+                height: "250px", // Increased image height
                 backgroundImage: `url(${image})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-                borderRadius: "12px",
+                borderRadius: "10px",
               }}
             />
           </SwiperSlide>

@@ -1,76 +1,49 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth, provider, signInWithPopup } from "../firebase";
+import { auth, provider } from "../firebase"; // Import Firebase auth and provider
+import { signInWithPopup, signOut } from "firebase/auth";
 
 const Navbar = ({ user, setUser }) => {
-  const [authDropdownOpen, setAuthDropdownOpen] = useState(false);
   const [deepfakeDropdownOpen, setDeepfakeDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
-  const signUpWithGoogle = () => {
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        setUser(result.user);
-        console.log("User signed up:", result.user);
-        alert("Sign-up successful! Welcome to Deep Defenders.");
-        setAuthDropdownOpen(false);
-      })
-      .catch((error) => {
-        console.error("Error during sign-up:", error.message);
-        alert("Sign-up failed! Please try again.");
-      });
+  // Function to handle sign-in with Google
+  const signInWithGoogle = async () => {
+    try {
+      // Force Google account selection
+      provider.setCustomParameters({ prompt: "select_account" });
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      setUser(user);
+      alert("Sign-in successful! Welcome back.");
+    } catch (error) {
+      console.error("Error during sign-in:", error.message);
+      alert("Sign-in failed! Please try again.");
+    }
   };
 
-  const signInWithGoogle = () => {
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        setUser(result.user);
-        console.log("User signed in:", result.user);
-        alert("Sign-in successful! Welcome back.");
-        setAuthDropdownOpen(false);
-      })
-      .catch((error) => {
-        console.error("Error during sign-in:", error.message);
-        alert("Sign-in failed! Please try again.");
-      });
-  };
-
-  const signOut = () => {
-    auth
-      .signOut()
-      .then(() => {
-        setUser(null);
-        setDeepfakeDropdownOpen(false);
-        alert("You have successfully signed out.");
-        setAuthDropdownOpen(false);
-      })
-      .catch((error) => {
-        console.error("Error signing out:", error.message);
-      });
+  // Function to handle sign-out
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      setUser(null);
+      alert("You have successfully signed out.");
+    } catch (error) {
+      console.error("Error signing out:", error.message);
+    }
   };
 
   const handleDeepfakeClick = () => {
     if (!user) {
-      alert("Please sign in or sign up to access Deepfake Detection!");
-      setAuthDropdownOpen(true);
+      // Show login prompt if user isn't logged in
+      alert("Please sign in to access Deepfake Detection.");
       return;
     }
     setDeepfakeDropdownOpen(!deepfakeDropdownOpen);
   };
 
-  // Close dropdowns when clicking outside
-  const handleClickOutside = () => {
-    setDeepfakeDropdownOpen(false);
-    setAuthDropdownOpen(false);
-  };
-
   return (
     <nav className="bg-[#111a22] px-4 py-3 flex items-center justify-between relative">
-      {/* Overlay to capture clicks outside dropdowns */}
-      {(deepfakeDropdownOpen || authDropdownOpen) && (
-        <div className="fixed inset-0 z-10" onClick={handleClickOutside}></div>
-      )}
-
       {/* Logo and Brand */}
       <div className="flex items-center gap-2">
         <div className="text-white">
@@ -101,35 +74,28 @@ const Navbar = ({ user, setUser }) => {
           How it works
         </a>
 
-        {/* Deepfake Detection Button and Dropdown */}
+        {/* Deepfake Detection Button with Dropdown */}
         <div className="relative">
           <button
             onClick={handleDeepfakeClick}
-            className="text-white text-sm hover:text-gray-300 cursor-pointer focus:outline-none"
+            className={`text-white text-sm hover:text-gray-300 cursor-pointer focus:outline-none ${
+              !user ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            disabled={!user} // Disable button if user is not logged in
           >
             Deepfake Detection
           </button>
 
-          {/* Deepfake Detection Dropdown - Only visible when logged in */}
           {deepfakeDropdownOpen && user && (
             <div className="absolute left-0 mt-2 w-48 bg-[#222a35] text-white flex flex-col gap-2 rounded-lg shadow-md z-20">
               <button
                 onClick={() => {
-                  navigate("/image-detection");
+                  navigate("/live-detection");
                   setDeepfakeDropdownOpen(false);
                 }}
                 className="px-4 py-2 hover:text-gray-300 text-left"
               >
-                Image Detection
-              </button>
-              <button
-                onClick={() => {
-                  navigate("/video-detection");
-                  setDeepfakeDropdownOpen(false);
-                }}
-                className="px-4 py-2 hover:text-gray-300 text-left"
-              >
-                Video Detection
+                Live Detection
               </button>
               <button
                 onClick={() => {
@@ -142,12 +108,12 @@ const Navbar = ({ user, setUser }) => {
               </button>
               <button
                 onClick={() => {
-                  navigate("/live-detection");
+                  navigate("/image-detection");
                   setDeepfakeDropdownOpen(false);
                 }}
                 className="px-4 py-2 hover:text-gray-300 text-left"
               >
-                Live Detection
+                Image Detection
               </button>
             </div>
           )}
@@ -160,43 +126,27 @@ const Navbar = ({ user, setUser }) => {
           Contact us
         </a>
 
-        {/* Auth Dropdown */}
-        <div className="relative">
-          <button
-            onClick={() => setAuthDropdownOpen(!authDropdownOpen)}
-            className="bg-[#1466b8] text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-[#1255a0] transition-colors relative overflow-hidden"
-          >
-            <span className="relative">
-              {user ? "Welcome" : "Let's Go"}
-              <span className="absolute top-0 -right-6 animate-bounce">🚀</span>
-            </span>
-          </button>
-          {authDropdownOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-[#222a35] text-white flex flex-col gap-2 rounded-lg shadow-md z-20">
-              {!user ? (
-                <>
-                  <button
-                    onClick={signUpWithGoogle}
-                    className="px-4 py-2 text-left hover:text-gray-300"
-                  >
-                    Sign Up with Google
-                  </button>
-                  <button
-                    onClick={signInWithGoogle}
-                    className="px-4 py-2 text-left hover:text-gray-300"
-                  >
-                    Sign In with Google
-                  </button>
-                </>
-              ) : (
-                <button
-                  onClick={signOut}
-                  className="px-4 py-2 text-left hover:text-gray-300"
-                >
-                  Sign Out
-                </button>
-              )}
-            </div>
+        {/* Sign In / Sign Out Buttons */}
+        <div className="flex items-center gap-4">
+          {!user ? (
+            <button
+              onClick={signInWithGoogle}
+              className="flex items-center gap-2 px-4 py-2 bg-[#1466b8] text-white font-bold rounded-xl hover:bg-[#1255a0] transition"
+            >
+              <img
+                src="https://img.icons8.com/clouds/50/google-logo.png"
+                alt="google-logo"
+                className="w-10 h-10"
+              />
+              Sign In
+            </button>
+          ) : (
+            <button
+              onClick={handleSignOut}
+              className="px-4 py-2 bg-[#1466b8] text-white font-bold rounded-xl hover:bg-[#1255a0] transition"
+            >
+              Sign Out
+            </button>
           )}
         </div>
       </div>
