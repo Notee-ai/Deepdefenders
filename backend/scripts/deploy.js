@@ -8,20 +8,22 @@ async function main() {
   console.log("Deploying contract...");
   const deepDefenders = await DeepDefenders.deploy();
 
-  // Wait for the contract to be deployed
+  // Wait for the deployment transaction to be mined
   await deepDefenders.waitForDeployment();
 
-  // Get deployment information
+  // Get the contract address
   const address = await deepDefenders.getAddress();
+
+  // Get the deployment transaction
   const deployTx = deepDefenders.deploymentTransaction();
 
-  console.log("Contract deployed!");
-  console.log("Transaction Hash:", deployTx.hash);
+  console.log("Contract deployed successfully!");
   console.log("Contract Address:", address);
-  console.log(
-    "Deployment confirmed in block:",
-    await deployTx.getBlockNumber()
-  );
+  console.log("Transaction Hash:", deployTx.hash);
+
+  // Wait for more confirmations (optional)
+  await deployTx.wait(2); // wait for 2 confirmations
+  console.log("Deployment confirmed!");
 }
 
 // Execute the script

@@ -1,6 +1,4 @@
 import React, { useState, useEffect, Suspense } from "react";
-import RecordForm from "./components/RecordDetection";
-import FetchForm from "./components/FetchDetection";
 import {
   BrowserRouter as Router,
   Routes,
@@ -13,8 +11,12 @@ import Footer from "./components/footer";
 import HowItWorks from "./pages/howitworks";
 import ContactUs from "./pages/contactus";
 import Features from "./pages/features";
-import DeepfakeDetection from "./pages/DeepfakeDetection";
+
 import Confetti from "react-confetti";
+import DetectionForm from "./components/DetectionForm";
+import BlockchainVerification from "./components/BlockchainVerification";
+import VerificationAndDetectionPage from "./components/VerificationAndDetectionPage";
+
 
 import { auth } from "./firebase";
 import { onAuthStateChanged } from "firebase/auth";
@@ -170,12 +172,10 @@ function AppContent({ user, setUser }) {
             <Route path="/howitworks" element={<HowItWorks />} />
             <Route path="/contactus" element={<ContactUs />} />
             <Route path="/features" element={<Features user={user} />} />
-            <Route
-              path="/deepfake-detection"
-              element={user ? <DeepfakeDetection /> : <Hero />}
-            />
-            <Route path="/record" element={<RecordForm />} />
-            <Route path="/fetch" element={<FetchForm />} />
+            
+            <Route path="/detectionform" element={<DetectionForm />} />
+            <Route path="/verify" element={<BlockchainVerification />} />
+            <Route path="/verifidet" element={<VerificationAndDetectionPage />} />
           </Routes>
         </Suspense>
         <Footer />
