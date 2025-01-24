@@ -122,6 +122,9 @@ const Navbar = ({ user, setUser }) => {
         <a href="/features" className="text-white text-sm hover:text-gray-300">
           Features
         </a>
+        <a href="/detectionform" className="text-white text-sm hover:text-gray-300">
+          Detection Form
+        </a>
         <a href="/contactus" className="text-white text-sm hover:text-gray-300">
           Contact us
         </a>
