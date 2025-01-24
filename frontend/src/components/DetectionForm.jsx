@@ -8,11 +8,35 @@ import {
   FormControlLabel,
   Alert,
   CircularProgress,
+  Link,
+  Paper,
+  Container,
+  Grid,
 } from "@mui/material";
 import {
   initializeBlockchain,
   storeDetectionResult,
 } from "../utils/blockchain";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import "@fontsource/space-grotesk"; // Include Space Grotesk
+import "@fontsource/noto-sans"; // Include Noto Sans
+
+const theme = createTheme({
+  typography: {
+    fontFamily: "'Space Grotesk', 'Noto Sans', sans-serif",
+  },
+  palette: {
+    text: {
+      primary: "#FFFFFF", // Set text color to white
+    },
+    background: {
+      default: "#FFFFFF", // White background for the page
+    },
+    primary: {
+      main: "#1976D2", // Blue color for buttons and links
+    },
+  },
+});
 
 const DetectionForm = () => {
   const [walletAddress, setWalletAddress] = useState("");
@@ -20,6 +44,7 @@ const DetectionForm = () => {
   const [isDeepfake, setIsDeepfake] = useState(false);
   const [details, setDetails] = useState("");
   const [status, setStatus] = useState("");
+  const [transactionHash, setTransactionHash] = useState("");
   const [error, setError] = useState("");
   const [isInitialized, setIsInitialized] = useState(false);
   const [isInitializing, setIsInitializing] = useState(true);
@@ -63,6 +88,7 @@ const DetectionForm = () => {
     e.preventDefault();
     setStatus("Submitting...");
     setError("");
+    setTransactionHash("");
 
     try {
       if (!isInitialized) {
@@ -83,7 +109,8 @@ const DetectionForm = () => {
         details.trim()
       );
 
-      setStatus(`Submission successful! Transaction Hash: ${txHash}`);
+      setStatus("Submission successful!");
+      setTransactionHash(txHash);
       setMediaHash("");
       setIsDeepfake(false);
       setDetails("");
@@ -96,99 +123,202 @@ const DetectionForm = () => {
 
   if (isInitializing) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" p={3}>
-        <CircularProgress />
-        <Typography ml={2}>Connecting to blockchain...</Typography>
-      </Box>
+      <ThemeProvider theme={theme}>
+        <Container maxWidth="sm">
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100vh"
+          >
+            <CircularProgress />
+            <Typography ml={2}>Connecting to blockchain...</Typography>
+          </Box>
+        </Container>
+      </ThemeProvider>
     );
   }
 
   return (
-    <Box p={3}>
-      <Typography variant="h4" gutterBottom>
-        Submit Detection Result
-      </Typography>
-
-      {error && (
-        <Alert severity="error" sx={{ mb: 2 }}>
-          {error}
-        </Alert>
-      )}
-
-      {!walletAddress && (
-        <Alert severity="warning" sx={{ mb: 2 }}>
-          Please connect your wallet to submit results.
-        </Alert>
-      )}
-
-      <form onSubmit={handleSubmit}>
-        <TextField
-          fullWidth
-          label="Wallet Address"
-          value={walletAddress}
-          disabled
-          margin="normal"
-          helperText="Connected wallet address"
-        />
-        <TextField
-          fullWidth
-          required
-          label="Media Hash"
-          value={mediaHash}
-          onChange={(e) => setMediaHash(e.target.value)}
-          margin="normal"
-          helperText="Unique identifier for the analyzed media."
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={isDeepfake}
-              onChange={(e) => setIsDeepfake(e.target.checked)}
-              color="primary"
-            />
-          }
-          label="Is Deepfake"
-          sx={{ my: 1 }}
-        />
-        <TextField
-          fullWidth
-          required
-          label="Details"
-          value={details}
-          onChange={(e) => setDetails(e.target.value)}
-          margin="normal"
-          multiline
-          rows={4}
-          helperText="Provide detailed analysis."
-        />
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          disabled={
-            !isInitialized || !walletAddress || status === "Submitting..."
-          }
-          sx={{ mt: 2 }}
+    <ThemeProvider theme={theme}>
+      <Container maxWidth="md">
+        <Paper
+          elevation={3}
+          sx={{
+            p: 4,
+            mt: 4,
+            borderRadius: 2,
+            backgroundColor: "#FFFFFF", // White background
+            color: "text.primary",
+          }}
         >
-          {status === "Submitting..." ? (
-            <>
-              <CircularProgress size={24} sx={{ mr: 1 }} />
-              Submitting...
-            </>
-          ) : (
-            "Submit"
-          )}
-        </Button>
-      </form>
+          <Box height="700px">
+            {" "}
+            {/* Adjusted height */}
+            <Typography
+              variant="h4"
+              gutterBottom
+              sx={{
+                fontWeight: 700,
+                textAlign: "center",
+                mb: 3,
+                color: "black", // White text color for header
+              }}
+            >
+              Deepfake Detection Submission
+            </Typography>
+            {error && (
+              <Alert severity="error" sx={{ mb: 2 }}>
+                {error}
+              </Alert>
+            )}
+            {!walletAddress && (
+              <Alert severity="warning" sx={{ mb: 2 }}>
+                Please connect your wallet to submit results.
+              </Alert>
+            )}
+            <form onSubmit={handleSubmit}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Wallet Address"
+                    value={walletAddress}
+                    disabled
+                    margin="normal"
+                    helperText="Connected wallet address"
+                    variant="outlined"
+                    InputProps={{
+                      style: { color: "#FFFFFF" },
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    required
+                    label="Media Hash"
+                    value={mediaHash}
+                    onChange={(e) => setMediaHash(e.target.value)}
+                    margin="normal"
+                    helperText="Unique identifier for the analyzed media"
+                    variant="outlined"
+                    InputProps={{
+                      style: { color: "#FFFFFF" },
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={isDeepfake}
+                        onChange={(e) => setIsDeepfake(e.target.checked)}
+                        color="primary"
+                      />
+                    }
+                    label="Is Deepfake"
+                    sx={{ color: "black" }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    required
+                    label="Detection Details"
+                    value={details}
+                    onChange={(e) => setDetails(e.target.value)}
+                    margin="normal"
+                    multiline
+                    rows={4}
+                    helperText="Provide comprehensive analysis of the media"
+                    variant="outlined"
+                    InputProps={{
+                      style: { color: "#FFFFFF" },
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                    disabled={
+                      !isInitialized ||
+                      !walletAddress ||
+                      status === "Submitting..."
+                    }
+                    sx={{
+                      mt: 2,
+                      py: 1.5,
+                      fontWeight: 700,
+                      textTransform: "none",
+                    }}
+                  >
+                    {status === "Submitting..." ? (
+                      <>
+                        <CircularProgress size={24} sx={{ mr: 1 }} />
+                        Submitting...
+                      </>
+                    ) : (
+                      "Submit Detection Result"
+                    )}
+                  </Button>
+                </Grid>
+              </Grid>
+            </form>
+            {transactionHash && (
+              <Paper
+                elevation={2}
+                sx={{
+                  mt: 3,
+                  p: 3,
+                  backgroundColor: "black", // White background
+                  borderRadius: 2,
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  sx={{
+                    color: "success.main",
+                    mb: 2,
+                    fontWeight: 700,
+                  }}
+                >
+                  Submission Successful
+                </Typography>
 
-      {status && (
-        <Box mt={2} p={2} bgcolor="background.paper" borderRadius={1}>
-          <Typography variant="body1" color="success.main">
-            {status}
-          </Typography>
-        </Box>
-      )}
-    </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 2,
+                  }}
+                >
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      color: "black", // White text color
+                    }}
+                  >
+                    Transaction Hash:
+                    <Link
+                      href={`https://etherscan.io/tx/${transactionHash}`}
+                      target="_blank"
+                      rel="noopener"
+                      sx={{ ml: 1, color: "primary.main" }}
+                    >
+                      {transactionHash}
+                    </Link>
+                  </Typography>
+                </Box>
+              </Paper>
+            )}
+          </Box>
+        </Paper>
+      </Container>
+    </ThemeProvider>
   );
 };
 
