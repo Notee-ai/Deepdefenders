@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Classification</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Deepfake vs Real Image Detection</h1>
+    <form id="upload-form" method="POST" enctype="multipart/form-data">
+      <input type="file" name="image" id="image-input" accept="image/*" required>
+      <button type="submit">Upload and Predict</button>
+    </form>
+    <div id="result" class="hidden">
+      <h2>Prediction Result</h2>
+      <p><strong>Label:</strong> <span id="prediction-label"></span></p>
+      <p><strong>Confidence:</strong> <span id="prediction-confidence"></span></p>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('upload-form');
+    const resultDiv = document.getElementById('result');
+    const labelSpan = document.getElementById('prediction-label');
+    const confidenceSpan = document.getElementById('prediction-confidence');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      try {
+        const response = await fetch('/predict', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!response.ok) {
+          throw new Error('Prediction failed!');
+        }
+
+        const data = await response.json();
+        labelSpan.textContent = data.prediction;
+        confidenceSpan.textContent = (data.confidence * 100).toFixed(2) + '%';
+
+        resultDiv.classList.remove('hidden');
+      } catch (error) {
+        alert('Error: ' + error.message);
+      }
+    });
+  </script>
+</body>
+</html>
