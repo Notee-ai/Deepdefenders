@@ -1,4 +1,4 @@
-  import Web3 from "web3";
+import Web3 from "web3";
 import abi from "./contractABI.json";
 
 class BlockchainService {
@@ -6,11 +6,9 @@ class BlockchainService {
     this.CONTRACT_ADDRESS =
       contractAddress ||
       process.env.REACT_APP_CONTRACT_ADDRESS ||
-      "0x5fbdb2315678afecb367f032d93f642f64180aa3";
+      "0x5FbDB2315678afecb367f032d93F642f64180aa3";
     this.RPC_URL =
-      rpcUrl ||
-      process.env.REACT_APP_RPC_URL ||
-      "https://sepolia.base.org";
+      rpcUrl || process.env.REACT_APP_RPC_URL || "https://sepolia.base.org";
     this.web3 = null;
     this.contract = null;
     this.networkId = 84532; // Base Sepolia Chain ID
@@ -24,25 +22,29 @@ class BlockchainService {
         const accounts = await window.ethereum.request({
           method: "eth_requestAccounts",
         });
-        if (!accounts?.length) throw new Error("No accounts found. Please unlock MetaMask.");
+        if (!accounts?.length)
+          throw new Error("No accounts found. Please unlock MetaMask.");
 
         const networkId = await window.ethereum.request({
           method: "net_version",
         });
-        
+
         if (networkId !== this.networkId.toString()) {
           await window.ethereum.request({
-            method: 'wallet_switchEthereumChain',
-            params: [{ chainId: '0x14A34' }], // 84532 in hex
+            method: "wallet_switchEthereumChain",
+            params: [{ chainId: "0x14A34" }], // 84532 in hex
           });
         }
-        
+
         this.networkId = networkId;
         this.web3 = new Web3(window.ethereum);
 
         window.ethereum.on("chainChanged", () => window.location.reload());
 
-        console.log("Web3 initialized with MetaMask on Base Sepolia:", networkId);
+        console.log(
+          "Web3 initialized with MetaMask on Base Sepolia:",
+          networkId
+        );
       } else if (this.RPC_URL) {
         this.web3 = new Web3(new Web3.providers.HttpProvider(this.RPC_URL));
         this.networkId = await this.web3.eth.net.getId();
@@ -50,8 +52,10 @@ class BlockchainService {
         throw new Error("No Web3 provider detected");
       }
 
-      if (!this.CONTRACT_ADDRESS) throw new Error("Contract address is not defined");
-      if (!this.web3.utils.isAddress(this.CONTRACT_ADDRESS)) throw new Error("Invalid contract address format");
+      if (!this.CONTRACT_ADDRESS)
+        throw new Error("Contract address is not defined");
+      if (!this.web3.utils.isAddress(this.CONTRACT_ADDRESS))
+        throw new Error("Invalid contract address format");
       if (!Array.isArray(abi)) throw new Error("Invalid ABI format");
 
       this.contract = new this.web3.eth.Contract(abi, this.CONTRACT_ADDRESS);
@@ -149,9 +153,9 @@ class BlockchainService {
         details.trim()
       );
 
-      // Estimate gas with higher buffer
+      // Estimate gas with a smaller buffer (5% buffer to avoid high fees)
       const gasEstimate = await tx.estimateGas({ from: sender });
-      const gasLimit = Math.floor(Number(gasEstimate) * 1.2); // 20% buffer
+      const gasLimit = Math.floor(Number(gasEstimate) * 1.05); // 5% buffer
 
       // Send the transaction with explicit gas parameters
       const result = await tx.send({
@@ -183,8 +187,6 @@ class BlockchainService {
     }
   }
 }
-
-
 
 const blockchainService = new BlockchainService();
 export default blockchainService;

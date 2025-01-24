@@ -1,131 +1,131 @@
- [
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "string",
-          "name": "mediaHash",
-          "type": "string"
-        },
-        {
-          "indexed": false,
-          "internalType": "bool",
-          "name": "isDeepfake",
-          "type": "bool"
-        },
-        {
-          "indexed": false,
-          "internalType": "string",
-          "name": "details",
-          "type": "string"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "timestamp",
-          "type": "uint256"
-        }
-      ],
-      "name": "DetectionRecorded",
-      "type": "event"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "string",
-          "name": "mediaHash",
-          "type": "string"
-        }
-      ],
-      "name": "getDetection",
-      "outputs": [
-        {
-          "components": [
-            {
-              "internalType": "string",
-              "name": "mediaHash",
-              "type": "string"
-            },
-            {
-              "internalType": "bool",
-              "name": "isDeepfake",
-              "type": "bool"
-            },
-            {
-              "internalType": "string",
-              "name": "details",
-              "type": "string"
-            },
-            {
-              "internalType": "uint256",
-              "name": "timestamp",
-              "type": "uint256"
-            }
-          ],
-          "internalType": "struct DeepDefenders.DetectionResult",
-          "name": "",
-          "type": "tuple"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "string",
-          "name": "mediaHash",
-          "type": "string"
-        },
-        {
-          "internalType": "bool",
-          "name": "isDeepfake",
-          "type": "bool"
-        },
-        {
-          "internalType": "string",
-          "name": "details",
-          "type": "string"
-        }
-      ],
-      "name": "recordDetection",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "string",
-          "name": "",
-          "type": "string"
-        }
-      ],
-      "name": "results",
-      "outputs": [
-        {
-          "internalType": "string",
-          "name": "mediaHash",
-          "type": "string"
-        },
-        {
-          "internalType": "bool",
-          "name": "isDeepfake",
-          "type": "bool"
-        },
-        {
-          "internalType": "string",
-          "name": "details",
-          "type": "string"
-        },
-        {
-          "internalType": "uint256",
-          "name": "timestamp",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    }
-  ]
+[
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "mediaHash",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "isDeepfake",
+        "type": "bool"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "details",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      }
+    ],
+    "name": "DetectionRecorded",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "mediaHash",
+        "type": "string"
+      }
+    ],
+    "name": "getDetection",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "string",
+            "name": "mediaHash",
+            "type": "string"
+          },
+          {
+            "internalType": "bool",
+            "name": "isDeepfake",
+            "type": "bool"
+          },
+          {
+            "internalType": "string",
+            "name": "details",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "timestamp",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct DeepDefenders.DetectionResult",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "mediaHash",
+        "type": "string"
+      },
+      {
+        "internalType": "bool",
+        "name": "isDeepfake",
+        "type": "bool"
+      },
+      {
+        "internalType": "string",
+        "name": "details",
+        "type": "string"
+      }
+    ],
+    "name": "recordDetection",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "name": "results",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "mediaHash",
+        "type": "string"
+      },
+      {
+        "internalType": "bool",
+        "name": "isDeepfake",
+        "type": "bool"
+      },
+      {
+        "internalType": "string",
+        "name": "details",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

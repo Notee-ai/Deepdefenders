@@ -14,8 +14,7 @@ import Features from "./pages/features";
 
 import Confetti from "react-confetti";
 import DetectionForm from "./components/DetectionForm";
-import BlockchainVerification from "./components/BlockchainVerification";
-import VerificationAndDetectionPage from "./components/VerificationAndDetectionPage";
+
 
 
 import { auth } from "./firebase";
@@ -172,10 +171,9 @@ function AppContent({ user, setUser }) {
             <Route path="/howitworks" element={<HowItWorks />} />
             <Route path="/contactus" element={<ContactUs />} />
             <Route path="/features" element={<Features user={user} />} />
-            
+
             <Route path="/detectionform" element={<DetectionForm />} />
-            <Route path="/verify" element={<BlockchainVerification />} />
-            <Route path="/verifidet" element={<VerificationAndDetectionPage />} />
+            
           </Routes>
         </Suspense>
         <Footer />

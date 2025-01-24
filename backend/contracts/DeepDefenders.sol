@@ -1,36 +1,23 @@
-// Solidity Contract Example
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.28;
 
-contract Detection {
+contract DeepDefenders {
     struct DetectionResult {
+        string mediaHash;
         bool isDeepfake;
         string details;
-        uint256 timestamp;
     }
 
-    mapping(string => DetectionResult) public detectionResults;
-    mapping(string => string) public transactionToMedia;
+    mapping(string => DetectionResult) public results;
 
-    event DetectionRecorded(string mediaHash, bool isDeepfake, string details, uint256 timestamp, string transactionId);
+    event DetectionRecorded(string mediaHash, bool isDeepfake, string details);
 
     function recordDetection(string memory mediaHash, bool isDeepfake, string memory details) public {
-        require(bytes(mediaHash).length > 0, "Media hash cannot be empty");
-        require(bytes(details).length > 0, "Details cannot be empty");
-
-        detectionResults[mediaHash] = DetectionResult(isDeepfake, details, block.timestamp);
-        transactionToMedia[msg.sender] = mediaHash;
-
-        emit DetectionRecorded(mediaHash, isDeepfake, details, block.timestamp, msg.sender);
+        results[mediaHash] = DetectionResult(mediaHash, isDeepfake, details);
+        emit DetectionRecorded(mediaHash, isDeepfake, details);
     }
 
-    function getDetection(string memory mediaHash) public view returns (bool, string memory, uint256) {
-        DetectionResult memory result = detectionResults[mediaHash];
-        require(bytes(result.details).length > 0, "No detection result found");
-        return (result.isDeepfake, result.details, result.timestamp);
-    }
-
-    function getDetectionByTransaction(string memory txId) public view returns (bool, string memory, uint256) {
-        string memory mediaHash = transactionToMedia[txId];
-        return getDetection(mediaHash);
+    function getDetection(string memory mediaHash) public view returns (DetectionResult memory) {
+        require(bytes(results[mediaHash].mediaHash).length != 0, "Result not found");
+        return results[mediaHash];
     }
 }
